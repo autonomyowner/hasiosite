@@ -81,8 +81,8 @@ function App() {
       >
         <div className="nav-content">
           <div className="logo">
-            <img src="/logo.png" alt="Hasio" className="logo-img" />
-            <span className="logo-text">HASIO</span>
+            <img src="/logo.png" alt="Hasyo" className="logo-img" />
+            <span className="logo-text">HASYO</span>
           </div>
           <div className="nav-links">
             <a href="#problem">Problem</a>
@@ -178,11 +178,11 @@ function App() {
               <div className="phone-screen">
                 <div className="app-header">
                   <img src="/logo.png" alt="" className="app-logo" />
-                  <span>Hasio</span>
+                  <span>Hasyo</span>
                 </div>
                 <div className="app-content">
                   <div className="welcome-card">
-                    <h3>Welcome to Hasio</h3>
+                    <h3>Welcome to Hasyo</h3>
                     <p>Your AI travel assistant</p>
                   </div>
                   <div className="services-preview">
@@ -420,9 +420,9 @@ function App() {
           viewport={{ once: true }}
         >
           <div className="download-content">
-            <img src="/logo.png" alt="Hasio" className="download-logo" />
+            <img src="/logo.png" alt="Hasyo" className="download-logo" />
             <span className="download-badge">Available Now</span>
-            <h2>Download Hasio</h2>
+            <h2>Download Hasyo</h2>
             <p>Scan the QR code to download the app instantly on your Android device.</p>
 
             <a
@@ -521,12 +521,12 @@ function App() {
         <div className="footer-content">
           <div className="footer-brand">
             <div className="logo">
-              <img src="/logo.png" alt="Hasio" className="logo-img" />
-              <span className="logo-text">HASIO</span>
+              <img src="/logo.png" alt="Hasyo" className="logo-img" />
+              <span className="logo-text">HASYO</span>
             </div>
             <p>Smart Tourism Experience Platform</p>
           </div>
-          <p className="copyright">© 2025 Hasio. Investor Presentation - December 2025</p>
+          <p className="copyright">© 2025 Hasyo. Investor Presentation - December 2025</p>
         </div>
       </footer>
     </div>
