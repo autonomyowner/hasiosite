@@ -376,6 +376,11 @@ img {
   transform: translateX(-8px);
 }
 
+.app.rtl .contact-item span {
+  direction: ltr;
+  unicode-bidi: embed;
+}
+
 .app.rtl .hero-badge {
   font-family: var(--font-arabic);
 }
@@ -1113,18 +1118,35 @@ img {
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--accent-terracotta), transparent);
+  background: linear-gradient(90deg, var(--accent-terracotta), var(--accent-amber));
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity 0.4s var(--ease-out-expo);
+}
+
+.problem-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 0%, rgba(196, 92, 74, 0.03) 100%);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out-expo);
+  pointer-events: none;
 }
 
 .problem-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-dramatic);
-  border-color: var(--border-subtle);
+  transform: translateY(-10px) scale(1.01);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.08),
+    0 8px 20px rgba(196, 92, 74, 0.1);
+  border-color: rgba(196, 92, 74, 0.15);
+  background: var(--bg-pure);
 }
 
 .problem-card:hover::before {
+  opacity: 1;
+}
+
+.problem-card:hover::after {
   opacity: 1;
 }
 
