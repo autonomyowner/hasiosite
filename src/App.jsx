@@ -1,4 +1,276 @@
 import { motion } from 'motion/react'
+import { useState, useEffect } from 'react'
+
+const translations = {
+  ar: {
+    // Navigation
+    nav: {
+      problem: 'المشكلة',
+      solution: 'الحل',
+      roadmap: 'خارطة الطريق',
+      download: 'تحميل'
+    },
+    // Hero
+    hero: {
+      badge: 'منصة السياحة الذكية',
+      title: 'منصة تمكين التجربة السياحية الذكية',
+      subtitle: 'نرافق السائح لحظة بلحظة، نحول تجربته من عشوائية إلى ذكية ومنظمة',
+      downloadApp: 'تحميل التطبيق',
+      learnMore: 'اكتشف المزيد',
+      stats: {
+        commission: 'عمولة فقط',
+        costToTourist: 'تكلفة على السائح',
+        yearRevenue: 'ريال إيرادات السنة الأولى'
+      }
+    },
+    // Phone mockup
+    phone: {
+      welcome: 'مرحباً بك في Hasio',
+      assistant: 'مساعدك السياحي الذكي',
+      hotels: 'فنادق',
+      restaurants: 'مطاعم',
+      tours: 'جولات',
+      events: 'فعاليات',
+      botMessage: 'مرحباً! أين تريد أن تستكشف اليوم؟',
+      userMessage: 'ابحث عن فنادق في الرياض',
+      tapToSpeak: 'اضغط للتحدث'
+    },
+    // Problem section
+    problem: {
+      label: 'المشكلة',
+      title: 'الفجوة في السوق',
+      subtitle: 'تواجه السياحة المحلية تحديات تؤثر على جودة التجربة',
+      problems: [
+        {
+          title: 'تشتت الخدمات',
+          desc: 'السائح يحتاج إلى تطبيقات متعددة لخدمات مختلفة'
+        },
+        {
+          title: 'ضعف التجربة الرقمية',
+          desc: 'معظم التطبيقات لا تعمل بدون إنترنت'
+        },
+        {
+          title: 'الفجوة التسويقية',
+          desc: 'صعوبة الوصول للسياح أثناء الرحلة'
+        },
+        {
+          title: 'غياب المنصة الموحدة',
+          desc: 'لا توجد منصة شاملة تجمع كل الخدمات'
+        }
+      ]
+    },
+    // Solution section
+    solution: {
+      label: 'الحل',
+      title: 'أكثر من مجرد تطبيق',
+      services: [
+        {
+          title: 'حجوزات الفنادق',
+          desc: 'حجز فوري بأفضل الأسعار'
+        },
+        {
+          title: 'المطاعم المحلية',
+          desc: 'اكتشف أطباق المنطقة'
+        },
+        {
+          title: 'الجولات السياحية',
+          desc: 'برامج سياحية متنوعة'
+        },
+        {
+          title: 'الأنشطة الترفيهية',
+          desc: 'فعاليات وعروض مميزة'
+        }
+      ],
+      model: {
+        title: 'نموذج التشغيل: الاستحواذ الميداني',
+        steps: [
+          { title: 'الاستقبال', desc: 'حافلات السياح' },
+          { title: 'التمكين الميداني', desc: 'مرشدين + QR' },
+          { title: 'الربط', desc: 'مقدمي الخدمات' },
+          { title: 'العمليات', desc: 'الحجز والدفع' }
+        ],
+        highlight: 'عمولة 15% من مقدم الخدمة',
+        subHighlight: 'صفر تكلفة على السائح'
+      }
+    },
+    // Roadmap section
+    roadmap: {
+      label: 'خارطة الطريق لمدة 12 شهر',
+      title: 'الأهداف المرحلية',
+      touristsLabel: 'سائح',
+      milestones: [
+        'إطلاق مع 5 وجهات',
+        'التوسع إلى 15 وجهة',
+        'الوصول إلى 25 وجهة',
+        'تغطية جميع المناطق السياحية الرئيسية'
+      ],
+      financial: {
+        revenue: { label: 'إيرادات السنة الأولى', value: '12 مليون ريال' },
+        expense: { label: 'إجمالي المصروفات', value: '550 ألف ريال' },
+        profit: { label: 'صافي الربح', value: '11.45 مليون ريال' }
+      }
+    },
+    // Download section
+    download: {
+      badge: 'متوفر الآن',
+      title: 'تحميل Hasio',
+      desc: 'امسح رمز QR لتحميل التطبيق فوراً على جهاز الأندرويد الخاص بك.',
+      downloadFor: 'تحميل لـ',
+      android: 'أندرويد',
+      scanToDownload: 'امسح للتحميل'
+    },
+    // Founder section
+    founder: {
+      label: 'المؤسس وقائد المشروع',
+      name: 'مرزوق الشمري',
+      desc: 'قائد مشاريع سياحية وتقنية مع فوز في هاكاثونات وفهم عميق لسوق السياحة السعودي.',
+      investment: {
+        label: 'فرصة الاستثمار',
+        value: '750,000 ريال',
+        quote: '"نحن لا نفترض وجود السياح — لدينا خطة لجلبهم وخلق تجربتهم. هذا ما يجعل أرقامنا واقعية وقابلة للتحقيق."'
+      }
+    },
+    // Footer
+    footer: {
+      tagline: 'منصة تمكين التجربة السياحية الذكية',
+      copyright: '© 2025 Hasio. عرض للمستثمرين - ديسمبر 2025'
+    }
+  },
+  en: {
+    // Navigation
+    nav: {
+      problem: 'Problem',
+      solution: 'Solution',
+      roadmap: 'Roadmap',
+      download: 'Download'
+    },
+    // Hero
+    hero: {
+      badge: 'Smart Tourism Platform',
+      title: 'Smart Tourism Experience Platform',
+      subtitle: 'We accompany tourists moment by moment, transforming their experience from random to smart and organized',
+      downloadApp: 'Download App',
+      learnMore: 'Learn More',
+      stats: {
+        commission: 'Commission Only',
+        costToTourist: 'Cost to Tourist',
+        yearRevenue: 'SAR Year 1 Revenue'
+      }
+    },
+    // Phone mockup
+    phone: {
+      welcome: 'Welcome to Hasio',
+      assistant: 'Your AI travel assistant',
+      hotels: 'Hotels',
+      restaurants: 'Restaurants',
+      tours: 'Tours',
+      events: 'Events',
+      botMessage: 'Hello! Where would you like to explore today?',
+      userMessage: 'Find hotels in Riyadh',
+      tapToSpeak: 'Tap to speak'
+    },
+    // Problem section
+    problem: {
+      label: 'The Problem',
+      title: 'Market Gap',
+      subtitle: 'Local tourism faces challenges affecting experience quality',
+      problems: [
+        {
+          title: 'Scattered Services',
+          desc: 'Tourists need multiple apps for different services'
+        },
+        {
+          title: 'Poor Digital Experience',
+          desc: 'Most apps don\'t work without internet'
+        },
+        {
+          title: 'Marketing Gap',
+          desc: 'Difficulty reaching tourists during trips'
+        },
+        {
+          title: 'No Unified Platform',
+          desc: 'No comprehensive platform for all services'
+        }
+      ]
+    },
+    // Solution section
+    solution: {
+      label: 'The Solution',
+      title: 'More Than Just an App',
+      services: [
+        {
+          title: 'Hotel Bookings',
+          desc: 'Instant booking at best prices'
+        },
+        {
+          title: 'Local Restaurants',
+          desc: 'Discover regional cuisine'
+        },
+        {
+          title: 'Tourist Tours',
+          desc: 'Diverse tourism programs'
+        },
+        {
+          title: 'Activities',
+          desc: 'Events and special offers'
+        }
+      ],
+      model: {
+        title: 'Operating Model: Field Acquisition',
+        steps: [
+          { title: 'Reception', desc: 'Tourist Buses' },
+          { title: 'Field Enablement', desc: 'Guides + QR' },
+          { title: 'Connection', desc: 'Service Providers' },
+          { title: 'Operations', desc: 'Booking & Payment' }
+        ],
+        highlight: '15% commission from service provider',
+        subHighlight: 'Zero cost to tourist'
+      }
+    },
+    // Roadmap section
+    roadmap: {
+      label: '12-Month Roadmap',
+      title: 'Growth Milestones',
+      touristsLabel: 'Tourists',
+      milestones: [
+        'Launch with 5 destinations',
+        'Expand to 15 destinations',
+        'Reach 25 destinations',
+        'Cover all main tourist areas'
+      ],
+      financial: {
+        revenue: { label: 'Year 1 Revenue', value: '12M SAR' },
+        expense: { label: 'Total Expenses', value: '550K SAR' },
+        profit: { label: 'Net Profit', value: '11.45M SAR' }
+      }
+    },
+    // Download section
+    download: {
+      badge: 'Available Now',
+      title: 'Download Hasio',
+      desc: 'Scan the QR code to download the app instantly on your Android device.',
+      downloadFor: 'Download for',
+      android: 'Android',
+      scanToDownload: 'Scan to download'
+    },
+    // Founder section
+    founder: {
+      label: 'Founder & Project Lead',
+      name: 'Marzouq Al-Shammari',
+      desc: 'Tourism & tech project leader with hackathon wins and deep understanding of Saudi tourism market.',
+      investment: {
+        label: 'Investment Opportunity',
+        value: '750,000 SAR',
+        quote: '"We don\'t assume tourists exist — we have a plan to bring them and create their experience. That\'s what makes our numbers realistic and achievable."'
+      }
+    },
+    // Footer
+    footer: {
+      tagline: 'Smart Tourism Experience Platform',
+      copyright: '© 2025 Hasio. Investor Presentation - December 2025'
+    }
+  }
+}
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -22,69 +294,28 @@ const scaleIn = {
 }
 
 function App() {
-  const services = [
-    {
-      title: "Hotel Bookings",
-      titleAr: "حجوزات الفنادق",
-      description: "Instant booking at best prices",
-      descriptionAr: "حجز فوري بأفضل الأسعار"
-    },
-    {
-      title: "Local Restaurants",
-      titleAr: "المطاعم المحلية",
-      description: "Discover regional cuisine",
-      descriptionAr: "اكتشف أطباق المنطقة"
-    },
-    {
-      title: "Tourist Tours",
-      titleAr: "الجولات السياحية",
-      description: "Diverse tourism programs",
-      descriptionAr: "برامج سياحية متنوعة"
-    },
-    {
-      title: "Activities",
-      titleAr: "الأنشطة الترفيهية",
-      description: "Events and special offers",
-      descriptionAr: "فعاليات وعروض مميزة"
-    }
-  ]
+  const [lang, setLang] = useState('ar')
+  const t = translations[lang]
+  const isRTL = lang === 'ar'
 
-  const roadmap = [
-    { quarter: "Q1", tourists: "10K", milestone: "Launch with 5 destinations" },
-    { quarter: "Q2", tourists: "30K", milestone: "Expand to 15 destinations" },
-    { quarter: "Q3", tourists: "60K", milestone: "Reach 25 destinations" },
-    { quarter: "Q4", tourists: "100K", milestone: "Cover all main tourist areas" }
-  ]
+  useEffect(() => {
+    document.documentElement.lang = lang
+    document.documentElement.dir = isRTL ? 'rtl' : 'ltr'
+  }, [lang, isRTL])
 
-  const problems = [
-    {
-      title: "Scattered Services",
-      titleAr: "تشتت الخدمات",
-      desc: "Tourists need multiple apps for different services",
-      descAr: "السائح يحتاج إلى تطبيقات متعددة لخدمات مختلفة"
-    },
-    {
-      title: "Poor Digital Experience",
-      titleAr: "ضعف التجربة الرقمية",
-      desc: "Most apps don't work without internet",
-      descAr: "معظم التطبيقات لا تعمل بدون إنترنت"
-    },
-    {
-      title: "Marketing Gap",
-      titleAr: "الفجوة التسويقية",
-      desc: "Difficulty reaching tourists during trips",
-      descAr: "صعوبة الوصول للسياح أثناء الرحلة"
-    },
-    {
-      title: "No Unified Platform",
-      titleAr: "غياب المنصة الموحدة",
-      desc: "No comprehensive platform for all services",
-      descAr: "لا توجد منصة شاملة تجمع كل الخدمات"
-    }
+  const toggleLang = () => {
+    setLang(lang === 'ar' ? 'en' : 'ar')
+  }
+
+  const roadmapData = [
+    { quarter: "Q1", tourists: "10K" },
+    { quarter: "Q2", tourists: "30K" },
+    { quarter: "Q3", tourists: "60K" },
+    { quarter: "Q4", tourists: "100K" }
   ]
 
   return (
-    <div className="app">
+    <div className={`app ${isRTL ? 'rtl' : 'ltr'}`}>
       {/* Decorative Background */}
       <div className="bg-decoration">
         <div className="circle circle-1" />
@@ -106,21 +337,53 @@ function App() {
             whileHover={{ scale: 1.02 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
           >
-            <img src="/logo.png" alt="Hasyo" className="logo-img" />
-            <span className="logo-text">HASYO</span>
+            <img src="/logo.png" alt="Hasio" className="logo-img" />
+            <span className="logo-text">HASIO</span>
           </motion.div>
           <div className="nav-links">
-            {['Problem', 'Solution', 'Roadmap', 'Download'].map((item, i) => (
-              <motion.a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }}
-              >
-                {item}
-              </motion.a>
-            ))}
+            <motion.a
+              href="#problem"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+            >
+              {t.nav.problem}
+            </motion.a>
+            <motion.a
+              href="#solution"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+            >
+              {t.nav.solution}
+            </motion.a>
+            <motion.a
+              href="#roadmap"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+            >
+              {t.nav.roadmap}
+            </motion.a>
+            <motion.a
+              href="#download"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.5 }}
+            >
+              {t.nav.download}
+            </motion.a>
+            <motion.button
+              className="lang-toggle"
+              onClick={toggleLang}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.5 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {lang === 'ar' ? 'EN' : 'عربي'}
+            </motion.button>
           </div>
         </div>
       </motion.nav>
@@ -139,7 +402,7 @@ function App() {
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
             <span className="badge-dot" />
-            Smart Tourism Platform
+            {t.hero.badge}
           </motion.div>
 
           <motion.h1
@@ -147,8 +410,7 @@ function App() {
             variants={fadeUp}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="title-ar">منصة تمكين التجربة السياحية الذكية</span>
-            <span className="title-en">Smart Tourism Experience Platform</span>
+            {t.hero.title}
           </motion.h1>
 
           <motion.p
@@ -156,8 +418,7 @@ function App() {
             variants={fadeUp}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="subtitle-ar">نرافق السائح لحظة بلحظة، نحول تجربته من عشوائية إلى ذكية ومنظمة</span>
-            <span className="subtitle-en">We accompany tourists moment by moment, transforming their experience from random to smart and organized</span>
+            {t.hero.subtitle}
           </motion.p>
 
           <motion.div
@@ -172,7 +433,7 @@ function App() {
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
             >
-              <span>Download App</span>
+              <span>{t.hero.downloadApp}</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 5v14M5 12l7 7 7-7" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -184,7 +445,7 @@ function App() {
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
             >
-              Learn More
+              {t.hero.learnMore}
             </motion.a>
           </motion.div>
 
@@ -194,9 +455,9 @@ function App() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             {[
-              { value: "15%", label: "Commission Only" },
-              { value: "0", label: "Cost to Tourist" },
-              { value: "12M", label: "SAR Year 1 Revenue" }
+              { value: "15%", label: t.hero.stats.commission },
+              { value: "0", label: t.hero.stats.costToTourist },
+              { value: "12M", label: t.hero.stats.yearRevenue }
             ].map((stat, index) => (
               <motion.div key={stat.label} style={{ display: 'contents' }}>
                 {index > 0 && <div className="stat-divider" />}
@@ -242,30 +503,30 @@ function App() {
                   </div>
                   <div className="app-header">
                     <img src="/logo.png" alt="" className="app-logo" />
-                    <span>Hasyo</span>
+                    <span>Hasio</span>
                   </div>
                   <div className="app-content">
                     <div className="welcome-card">
-                      <h3>Welcome to Hasyo</h3>
-                      <p>Your AI travel assistant</p>
+                      <h3>{t.phone.welcome}</h3>
+                      <p>{t.phone.assistant}</p>
                     </div>
                     <div className="services-preview">
-                      <div className="service-chip">Hotels</div>
-                      <div className="service-chip">Restaurants</div>
-                      <div className="service-chip">Tours</div>
-                      <div className="service-chip">Events</div>
+                      <div className="service-chip">{t.phone.hotels}</div>
+                      <div className="service-chip">{t.phone.restaurants}</div>
+                      <div className="service-chip">{t.phone.tours}</div>
+                      <div className="service-chip">{t.phone.events}</div>
                     </div>
                     <div className="chat-preview">
                       <div className="chat-bubble bot">
-                        <p>Hello! Where would you like to explore today?</p>
+                        <p>{t.phone.botMessage}</p>
                       </div>
                       <div className="chat-bubble user">
-                        <p>Find hotels in Riyadh</p>
+                        <p>{t.phone.userMessage}</p>
                       </div>
                     </div>
                   </div>
                   <div className="voice-bar">
-                    <span className="voice-text">Tap to speak</span>
+                    <span className="voice-text">{t.phone.tapToSpeak}</span>
                     <div className="voice-btn">
                       <div className="voice-waves">
                         <span></span><span></span><span></span><span></span><span></span>
@@ -290,12 +551,9 @@ function App() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="section-label">The Problem</span>
-            <h2>
-              <span className="ar">الفجوة في السوق</span>
-              <span className="en">Market Gap</span>
-            </h2>
-            <p className="section-subtitle">Local tourism faces challenges affecting experience quality</p>
+            <span className="section-label">{t.problem.label}</span>
+            <h2>{t.problem.title}</h2>
+            <p className="section-subtitle">{t.problem.subtitle}</p>
           </motion.div>
 
           <motion.div
@@ -305,9 +563,9 @@ function App() {
             viewport={{ once: true, margin: "-50px" }}
             variants={staggerContainer}
           >
-            {problems.map((problem, index) => (
+            {t.problem.problems.map((problem, index) => (
               <motion.div
-                key={problem.title}
+                key={index}
                 className="problem-card"
                 variants={fadeUp}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
@@ -320,7 +578,6 @@ function App() {
                   </svg>
                 </div>
                 <h3>{problem.title}</h3>
-                <p className="ar-text">{problem.titleAr}</p>
                 <p className="desc">{problem.desc}</p>
               </motion.div>
             ))}
@@ -338,11 +595,8 @@ function App() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="section-label">The Solution</span>
-            <h2>
-              <span className="ar">أكثر من مجرد تطبيق</span>
-              <span className="en">More Than Just an App</span>
-            </h2>
+            <span className="section-label">{t.solution.label}</span>
+            <h2>{t.solution.title}</h2>
           </motion.div>
 
           <motion.div
@@ -352,9 +606,9 @@ function App() {
             viewport={{ once: true, margin: "-50px" }}
             variants={staggerContainer}
           >
-            {services.map((service, index) => (
+            {t.solution.services.map((service, index) => (
               <motion.div
-                key={service.title}
+                key={index}
                 className="service-card"
                 variants={fadeUp}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
@@ -383,8 +637,7 @@ function App() {
                   )}
                 </div>
                 <h3>{service.title}</h3>
-                <p className="ar-text">{service.titleAr}</p>
-                <p className="desc">{service.description}</p>
+                <p className="desc">{service.desc}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -396,38 +649,22 @@ function App() {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true }}
           >
-            <h3>
-              <span className="ar">نموذج التشغيل: الاستحواذ الميداني</span>
-              <span className="en">Operating Model: Field Acquisition</span>
-            </h3>
+            <h3>{t.solution.model.title}</h3>
             <div className="model-flow">
-              <div className="model-step">
-                <div className="step-num">1</div>
-                <span className="step-title">Reception</span>
-                <span className="step-desc">Tourist Buses</span>
-              </div>
-              <div className="model-arrow">→</div>
-              <div className="model-step">
-                <div className="step-num">2</div>
-                <span className="step-title">Field Enablement</span>
-                <span className="step-desc">Guides + QR</span>
-              </div>
-              <div className="model-arrow">→</div>
-              <div className="model-step">
-                <div className="step-num">3</div>
-                <span className="step-title">Connection</span>
-                <span className="step-desc">Service Providers</span>
-              </div>
-              <div className="model-arrow">→</div>
-              <div className="model-step">
-                <div className="step-num">4</div>
-                <span className="step-title">Operations</span>
-                <span className="step-desc">Booking & Payment</span>
-              </div>
+              {t.solution.model.steps.map((step, index) => (
+                <div key={index} style={{ display: 'contents' }}>
+                  <div className="model-step">
+                    <div className="step-num">{index + 1}</div>
+                    <span className="step-title">{step.title}</span>
+                    <span className="step-desc">{step.desc}</span>
+                  </div>
+                  {index < 3 && <div className="model-arrow">{isRTL ? '←' : '→'}</div>}
+                </div>
+              ))}
             </div>
             <div className="model-highlight">
-              <span className="highlight-main">15% commission from service provider</span>
-              <span className="highlight-sub">Zero cost to tourist</span>
+              <span className="highlight-main">{t.solution.model.highlight}</span>
+              <span className="highlight-sub">{t.solution.model.subHighlight}</span>
             </div>
           </motion.div>
         </div>
@@ -443,11 +680,8 @@ function App() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="section-label">12-Month Roadmap</span>
-            <h2>
-              <span className="ar">الأهداف المرحلية</span>
-              <span className="en">Growth Milestones</span>
-            </h2>
+            <span className="section-label">{t.roadmap.label}</span>
+            <h2>{t.roadmap.title}</h2>
           </motion.div>
 
           <motion.div
@@ -457,7 +691,7 @@ function App() {
             viewport={{ once: true, margin: "-50px" }}
             variants={staggerContainer}
           >
-            {roadmap.map((item, index) => (
+            {roadmapData.map((item, index) => (
               <motion.div
                 key={item.quarter}
                 className="roadmap-card"
@@ -467,8 +701,8 @@ function App() {
               >
                 <span className="quarter">{item.quarter}</span>
                 <span className="tourists">{item.tourists}</span>
-                <span className="tourists-label">Tourists</span>
-                <p className="milestone">{item.milestone}</p>
+                <span className="tourists-label">{t.roadmap.touristsLabel}</span>
+                <p className="milestone">{t.roadmap.milestones[index]}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -481,22 +715,33 @@ function App() {
             viewport={{ once: true, margin: "-50px" }}
             variants={staggerContainer}
           >
-            {[
-              { className: "revenue", label: "Year 1 Revenue", value: "12M SAR" },
-              { className: "expense", label: "Total Expenses", value: "550K SAR" },
-              { className: "profit", label: "Net Profit", value: "11.45M SAR" }
-            ].map((card) => (
-              <motion.div
-                key={card.className}
-                className={`financial-card ${card.className}`}
-                variants={scaleIn}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                whileHover={{ y: -5, transition: { duration: 0.3 } }}
-              >
-                <span className="fin-label">{card.label}</span>
-                <span className="fin-value">{card.value}</span>
-              </motion.div>
-            ))}
+            <motion.div
+              className="financial-card revenue"
+              variants={scaleIn}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -5, transition: { duration: 0.3 } }}
+            >
+              <span className="fin-label">{t.roadmap.financial.revenue.label}</span>
+              <span className="fin-value">{t.roadmap.financial.revenue.value}</span>
+            </motion.div>
+            <motion.div
+              className="financial-card expense"
+              variants={scaleIn}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -5, transition: { duration: 0.3 } }}
+            >
+              <span className="fin-label">{t.roadmap.financial.expense.label}</span>
+              <span className="fin-value">{t.roadmap.financial.expense.value}</span>
+            </motion.div>
+            <motion.div
+              className="financial-card profit"
+              variants={scaleIn}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -5, transition: { duration: 0.3 } }}
+            >
+              <span className="fin-label">{t.roadmap.financial.profit.label}</span>
+              <span className="fin-value">{t.roadmap.financial.profit.value}</span>
+            </motion.div>
           </motion.div>
         </div>
       </section>
@@ -511,10 +756,10 @@ function App() {
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="download-content">
-            <img src="/logo.png" alt="Hasyo" className="download-logo" />
-            <span className="download-badge">Available Now</span>
-            <h2>Download Hasyo</h2>
-            <p>Scan the QR code to download the app instantly on your Android device.</p>
+            <img src="/logo.png" alt="Hasio" className="download-logo" />
+            <span className="download-badge">{t.download.badge}</span>
+            <h2>{t.download.title}</h2>
+            <p>{t.download.desc}</p>
 
             <motion.a
               href="https://github.com/autonomyowner/hasio2/releases/download/v1.0.0/app-release.apk"
@@ -527,8 +772,8 @@ function App() {
                 <path d="M17.523 2.652l1.625 2.825a.5.5 0 01-.183.683l-.933.536a8.5 8.5 0 010 10.608l.933.536a.5.5 0 01.183.683l-1.625 2.825a.5.5 0 01-.683.183l-.934-.539a8.5 8.5 0 01-9.182 0l-.934.539a.5.5 0 01-.683-.183L3.477 18.52a.5.5 0 01.183-.683l.933-.536a8.5 8.5 0 010-10.608l-.933-.536a.5.5 0 01-.183-.683l1.625-2.825a.5.5 0 01.683-.183l.934.539a8.5 8.5 0 019.182 0l.934-.539a.5.5 0 01.683.183zM12 7a5 5 0 100 10 5 5 0 000-10z"/>
               </svg>
               <div>
-                <span>Download for</span>
-                <strong>Android</strong>
+                <span>{t.download.downloadFor}</span>
+                <strong>{t.download.android}</strong>
               </div>
             </motion.a>
           </div>
@@ -549,7 +794,7 @@ function App() {
                 <span /><span /><span /><span />
               </div>
             </motion.div>
-            <p className="qr-hint">Scan to download</p>
+            <p className="qr-hint">{t.download.scanToDownload}</p>
           </div>
         </motion.div>
       </section>
@@ -565,12 +810,10 @@ function App() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="founder-info">
-              <span className="founder-label">Founder & Project Lead</span>
-              <h3>Marzouq Al-Shammari</h3>
-              <p className="founder-ar">مرزوق الشمري</p>
-              <p className="founder-desc">
-                Tourism & tech project leader with hackathon wins and deep understanding of Saudi tourism market.
-              </p>
+              <span className="founder-label">{t.founder.label}</span>
+              <h3>{lang === 'ar' ? 'مرزوق الشمري' : 'Marzouq Al-Shammari'}</h3>
+              {lang === 'en' && <p className="founder-ar">مرزوق الشمري</p>}
+              <p className="founder-desc">{t.founder.desc}</p>
             </div>
             <div className="founder-contact">
               <a href="tel:+966552442119" className="contact-item">
@@ -602,13 +845,10 @@ function App() {
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="investment-amount">
-              <span className="inv-label">Investment Opportunity</span>
-              <span className="inv-value">750,000 SAR</span>
+              <span className="inv-label">{t.founder.investment.label}</span>
+              <span className="inv-value">{t.founder.investment.value}</span>
             </div>
-            <p className="investment-quote">
-              "We don't assume tourists exist — we have a plan to bring them and create their experience.
-              That's what makes our numbers realistic and achievable."
-            </p>
+            <p className="investment-quote">{t.founder.investment.quote}</p>
           </motion.div>
         </div>
       </section>
@@ -618,12 +858,12 @@ function App() {
         <div className="footer-content">
           <div className="footer-brand">
             <div className="logo">
-              <img src="/logo.png" alt="Hasyo" className="logo-img" />
-              <span className="logo-text">HASYO</span>
+              <img src="/logo.png" alt="Hasio" className="logo-img" />
+              <span className="logo-text">HASIO</span>
             </div>
-            <p>Smart Tourism Experience Platform</p>
+            <p>{t.footer.tagline}</p>
           </div>
-          <p className="copyright">© 2025 Hasyo. Investor Presentation - December 2025</p>
+          <p className="copyright">{t.footer.copyright}</p>
         </div>
       </footer>
     </div>

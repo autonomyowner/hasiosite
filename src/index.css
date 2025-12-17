@@ -252,6 +252,178 @@ img {
   width: 100%;
 }
 
+/* Language Toggle Button */
+.lang-toggle {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-out-expo);
+  font-family: var(--font-heading);
+  letter-spacing: 0.5px;
+}
+
+.lang-toggle:hover {
+  background: var(--primary-rich);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow);
+}
+
+/* RTL Support */
+.app.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.app.rtl .hero-content,
+.app.rtl .section-header,
+.app.rtl .founder-info {
+  text-align: right;
+}
+
+.app.rtl .hero-title,
+.app.rtl .hero-subtitle {
+  font-family: var(--font-arabic);
+}
+
+.app.rtl .hero-title {
+  font-size: clamp(28px, 4vw, 48px);
+  line-height: 1.4;
+}
+
+.app.rtl .hero-subtitle {
+  font-size: 18px;
+  line-height: 1.9;
+}
+
+.app.rtl .section-header h2 {
+  font-family: var(--font-arabic);
+  font-size: clamp(28px, 4vw, 44px);
+}
+
+.app.rtl .problem-card h3,
+.app.rtl .service-card h3 {
+  font-family: var(--font-arabic);
+}
+
+.app.rtl .problem-card .desc,
+.app.rtl .service-card .desc {
+  font-family: var(--font-arabic);
+}
+
+.app.rtl .operating-model h3 {
+  font-family: var(--font-arabic);
+  font-size: 22px;
+}
+
+.app.rtl .step-title,
+.app.rtl .step-desc {
+  font-family: var(--font-arabic);
+}
+
+.app.rtl .milestone {
+  font-family: var(--font-arabic);
+}
+
+.app.rtl .fin-label {
+  font-family: var(--font-arabic);
+}
+
+.app.rtl .download-content h2 {
+  font-family: var(--font-arabic);
+  font-size: 36px;
+}
+
+.app.rtl .download-content p {
+  font-family: var(--font-arabic);
+}
+
+.app.rtl .download-btn div {
+  text-align: right;
+}
+
+.app.rtl .founder-info h3 {
+  font-family: var(--font-arabic);
+  font-size: 30px;
+}
+
+.app.rtl .founder-desc {
+  font-family: var(--font-arabic);
+}
+
+.app.rtl .investment-quote {
+  font-family: var(--font-arabic);
+  font-style: normal;
+}
+
+.app.rtl .footer-brand p {
+  font-family: var(--font-arabic);
+}
+
+.app.rtl .copyright {
+  font-family: var(--font-arabic);
+}
+
+.app.rtl .nav-links {
+  flex-direction: row-reverse;
+}
+
+.app.rtl .contact-item:hover {
+  transform: translateX(-8px);
+}
+
+.app.rtl .hero-badge {
+  font-family: var(--font-arabic);
+}
+
+.app.rtl .section-label {
+  font-family: var(--font-arabic);
+}
+
+.app.rtl .download-badge {
+  font-family: var(--font-arabic);
+}
+
+.app.rtl .founder-label {
+  font-family: var(--font-arabic);
+}
+
+.app.rtl .inv-label {
+  font-family: var(--font-arabic);
+}
+
+.app.rtl .qr-hint {
+  font-family: var(--font-arabic);
+}
+
+.app.rtl .highlight-main,
+.app.rtl .highlight-sub {
+  font-family: var(--font-arabic);
+}
+
+.app.rtl .model-flow {
+  flex-direction: row-reverse;
+}
+
+/* LTR Support (English) */
+.app.ltr {
+  direction: ltr;
+  text-align: left;
+}
+
+.app.ltr .hero-content,
+.app.ltr .section-header {
+  text-align: center;
+}
+
+.app.ltr .founder-info {
+  text-align: left;
+}
+
 /* ================================
    HERO SECTION - PREMIUM
    ================================ */
@@ -1877,7 +2049,17 @@ img {
   }
 
   .nav-links {
+    gap: 0;
+  }
+
+  .nav-links a {
     display: none;
+  }
+
+  .nav-links .lang-toggle {
+    display: block;
+    padding: 8px 16px;
+    font-size: 12px;
   }
 
   .logo-img {
