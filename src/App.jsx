@@ -1,5 +1,26 @@
 import { motion } from 'motion/react'
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0 }
+}
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.1
+    }
+  }
+}
+
+const scaleIn = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: { opacity: 1, scale: 1 }
+}
+
 function App() {
   const services = [
     {
@@ -75,32 +96,47 @@ function App() {
       {/* Navigation */}
       <motion.nav
         className="nav"
-        initial={{ y: -20, opacity: 0 }}
+        initial={{ y: -30, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       >
         <div className="nav-content">
-          <div className="logo">
+          <motion.div
+            className="logo"
+            whileHover={{ scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+          >
             <img src="/logo.png" alt="Hasyo" className="logo-img" />
             <span className="logo-text">HASYO</span>
-          </div>
+          </motion.div>
           <div className="nav-links">
-            <a href="#problem">Problem</a>
-            <a href="#solution">Solution</a>
-            <a href="#roadmap">Roadmap</a>
-            <a href="#download">Download</a>
+            {['Problem', 'Solution', 'Roadmap', 'Download'].map((item, i) => (
+              <motion.a
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }}
+              >
+                {item}
+              </motion.a>
+            ))}
           </div>
         </div>
       </motion.nav>
 
       {/* Hero Section */}
       <section className="hero">
-        <div className="hero-content">
+        <motion.div
+          className="hero-content"
+          initial="hidden"
+          animate="visible"
+          variants={staggerContainer}
+        >
           <motion.div
             className="hero-badge"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            variants={scaleIn}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
             <span className="badge-dot" />
             Smart Tourism Platform
@@ -108,9 +144,8 @@ function App() {
 
           <motion.h1
             className="hero-title"
-            initial={{ y: 40, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            variants={fadeUp}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             <span className="title-ar">منصة تمكين التجربة السياحية الذكية</span>
             <span className="title-en">Smart Tourism Experience Platform</span>
@@ -118,9 +153,8 @@ function App() {
 
           <motion.p
             className="hero-subtitle"
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.7, delay: 0.5 }}
+            variants={fadeUp}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             <span className="subtitle-ar">نرافق السائح لحظة بلحظة، نحول تجربته من عشوائية إلى ذكية ومنظمة</span>
             <span className="subtitle-en">We accompany tourists moment by moment, transforming their experience from random to smart and organized</span>
@@ -128,83 +162,117 @@ function App() {
 
           <motion.div
             className="hero-cta"
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.7, delay: 0.7 }}
+            variants={fadeUp}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <a href="#download" className="btn-primary">
+            <motion.a
+              href="#download"
+              className="btn-primary"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            >
               <span>Download App</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 5v14M5 12l7 7 7-7" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-            </a>
-            <a href="#solution" className="btn-secondary">
+            </motion.a>
+            <motion.a
+              href="#solution"
+              className="btn-secondary"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            >
               Learn More
-            </a>
+            </motion.a>
           </motion.div>
 
           <motion.div
             className="hero-stats"
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.7, delay: 0.9 }}
+            variants={fadeUp}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="stat">
-              <span className="stat-value">15%</span>
-              <span className="stat-label">Commission Only</span>
-            </div>
-            <div className="stat-divider" />
-            <div className="stat">
-              <span className="stat-value">0</span>
-              <span className="stat-label">Cost to Tourist</span>
-            </div>
-            <div className="stat-divider" />
-            <div className="stat">
-              <span className="stat-value">12M</span>
-              <span className="stat-label">SAR Year 1 Revenue</span>
-            </div>
+            {[
+              { value: "15%", label: "Commission Only" },
+              { value: "0", label: "Cost to Tourist" },
+              { value: "12M", label: "SAR Year 1 Revenue" }
+            ].map((stat, index) => (
+              <motion.div key={stat.label} style={{ display: 'contents' }}>
+                {index > 0 && <div className="stat-divider" />}
+                <motion.div
+                  className="stat"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1 + index * 0.15, duration: 0.6 }}
+                >
+                  <span className="stat-value">{stat.value}</span>
+                  <span className="stat-label">{stat.label}</span>
+                </motion.div>
+              </motion.div>
+            ))}
           </motion.div>
-        </div>
+        </motion.div>
 
         <motion.div
           className="hero-visual"
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1, delay: 0.4 }}
+          initial={{ opacity: 0, scale: 0.85, rotateY: -15 }}
+          animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+          transition={{ duration: 1.2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="phone-mockup">
             <div className="phone-frame">
-              <div className="phone-notch" />
+              <div className="phone-reflection" />
               <div className="phone-screen">
-                <div className="app-header">
-                  <img src="/logo.png" alt="" className="app-logo" />
-                  <span>Hasyo</span>
-                </div>
-                <div className="app-content">
-                  <div className="welcome-card">
-                    <h3>Welcome to Hasyo</h3>
-                    <p>Your AI travel assistant</p>
-                  </div>
-                  <div className="services-preview">
-                    <div className="service-chip">Hotels</div>
-                    <div className="service-chip">Restaurants</div>
-                    <div className="service-chip">Tours</div>
-                    <div className="service-chip">Events</div>
-                  </div>
-                  <div className="chat-preview">
-                    <div className="chat-bubble bot">
-                      <p>Hello! Where would you like to explore today?</p>
-                    </div>
-                    <div className="chat-bubble user">
-                      <p>Find hotels in Riyadh</p>
+                <div className="phone-notch" />
+                <div className="screen-content">
+                  <div className="status-bar">
+                    <span className="status-time">9:41</span>
+                    <div className="status-icons">
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8z"/>
+                      </svg>
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/>
+                      </svg>
+                      <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17 4h-3V2h-4v2H7v18h10V4z"/>
+                      </svg>
                     </div>
                   </div>
-                </div>
-                <div className="voice-bar">
-                  <div className="voice-waves">
-                    <span></span><span></span><span></span><span></span><span></span>
+                  <div className="app-header">
+                    <img src="/logo.png" alt="" className="app-logo" />
+                    <span>Hasyo</span>
                   </div>
-                  <span className="voice-text">Tap to speak</span>
+                  <div className="app-content">
+                    <div className="welcome-card">
+                      <h3>Welcome to Hasyo</h3>
+                      <p>Your AI travel assistant</p>
+                    </div>
+                    <div className="services-preview">
+                      <div className="service-chip">Hotels</div>
+                      <div className="service-chip">Restaurants</div>
+                      <div className="service-chip">Tours</div>
+                      <div className="service-chip">Events</div>
+                    </div>
+                    <div className="chat-preview">
+                      <div className="chat-bubble bot">
+                        <p>Hello! Where would you like to explore today?</p>
+                      </div>
+                      <div className="chat-bubble user">
+                        <p>Find hotels in Riyadh</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="voice-bar">
+                    <span className="voice-text">Tap to speak</span>
+                    <div className="voice-btn">
+                      <div className="voice-waves">
+                        <span></span><span></span><span></span><span></span><span></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="home-indicator" />
                 </div>
               </div>
             </div>
@@ -217,9 +285,10 @@ function App() {
         <div className="section-container">
           <motion.div
             className="section-header"
-            initial={{ y: 30, opacity: 0 }}
+            initial={{ y: 40, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             <span className="section-label">The Problem</span>
             <h2>
@@ -229,15 +298,20 @@ function App() {
             <p className="section-subtitle">Local tourism faces challenges affecting experience quality</p>
           </motion.div>
 
-          <div className="problems-grid">
+          <motion.div
+            className="problems-grid"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={staggerContainer}
+          >
             {problems.map((problem, index) => (
               <motion.div
                 key={problem.title}
                 className="problem-card"
-                initial={{ y: 40, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+                variants={fadeUp}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ y: -8, transition: { duration: 0.3 } }}
               >
                 <div className="problem-icon">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -250,7 +324,7 @@ function App() {
                 <p className="desc">{problem.desc}</p>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -259,9 +333,10 @@ function App() {
         <div className="section-container">
           <motion.div
             className="section-header"
-            initial={{ y: 30, opacity: 0 }}
+            initial={{ y: 40, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             <span className="section-label">The Solution</span>
             <h2>
@@ -270,16 +345,20 @@ function App() {
             </h2>
           </motion.div>
 
-          <div className="services-grid">
+          <motion.div
+            className="services-grid"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={staggerContainer}
+          >
             {services.map((service, index) => (
               <motion.div
                 key={service.title}
                 className="service-card"
-                initial={{ y: 40, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -8, scale: 1.02 }}
+                variants={fadeUp}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ y: -10, scale: 1.02, transition: { duration: 0.3 } }}
               >
                 <div className="service-icon">
                   {index === 0 && (
@@ -308,7 +387,7 @@ function App() {
                 <p className="desc">{service.description}</p>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {/* Operating Model */}
           <motion.div
@@ -359,9 +438,10 @@ function App() {
         <div className="section-container">
           <motion.div
             className="section-header"
-            initial={{ y: 30, opacity: 0 }}
+            initial={{ y: 40, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             <span className="section-label">12-Month Roadmap</span>
             <h2>
@@ -370,15 +450,20 @@ function App() {
             </h2>
           </motion.div>
 
-          <div className="roadmap-grid">
+          <motion.div
+            className="roadmap-grid"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={staggerContainer}
+          >
             {roadmap.map((item, index) => (
               <motion.div
                 key={item.quarter}
                 className="roadmap-card"
-                initial={{ y: 40, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.15 }}
+                variants={fadeUp}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ y: -8, transition: { duration: 0.3 } }}
               >
                 <span className="quarter">{item.quarter}</span>
                 <span className="tourists">{item.tourists}</span>
@@ -386,27 +471,32 @@ function App() {
                 <p className="milestone">{item.milestone}</p>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {/* Financial Summary */}
           <motion.div
             className="financial-summary"
-            initial={{ y: 40, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={staggerContainer}
           >
-            <div className="financial-card revenue">
-              <span className="fin-label">Year 1 Revenue</span>
-              <span className="fin-value">12M SAR</span>
-            </div>
-            <div className="financial-card expense">
-              <span className="fin-label">Total Expenses</span>
-              <span className="fin-value">550K SAR</span>
-            </div>
-            <div className="financial-card profit">
-              <span className="fin-label">Net Profit</span>
-              <span className="fin-value">11.45M SAR</span>
-            </div>
+            {[
+              { className: "revenue", label: "Year 1 Revenue", value: "12M SAR" },
+              { className: "expense", label: "Total Expenses", value: "550K SAR" },
+              { className: "profit", label: "Net Profit", value: "11.45M SAR" }
+            ].map((card) => (
+              <motion.div
+                key={card.className}
+                className={`financial-card ${card.className}`}
+                variants={scaleIn}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ y: -5, transition: { duration: 0.3 } }}
+              >
+                <span className="fin-label">{card.label}</span>
+                <span className="fin-value">{card.value}</span>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </section>
@@ -415,9 +505,10 @@ function App() {
       <section className="download-section" id="download">
         <motion.div
           className="download-card"
-          initial={{ y: 50, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true }}
+          initial={{ y: 60, opacity: 0, scale: 0.95 }}
+          whileInView={{ y: 0, opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="download-content">
             <img src="/logo.png" alt="Hasyo" className="download-logo" />
@@ -425,9 +516,12 @@ function App() {
             <h2>Download Hasyo</h2>
             <p>Scan the QR code to download the app instantly on your Android device.</p>
 
-            <a
+            <motion.a
               href="https://github.com/autonomyowner/hasio2/releases/download/v1.0.0/app-release.apk"
               className="download-btn"
+              whileHover={{ scale: 1.03, y: -3 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
             >
               <svg viewBox="0 0 24 24" fill="currentColor">
                 <path d="M17.523 2.652l1.625 2.825a.5.5 0 01-.183.683l-.933.536a8.5 8.5 0 010 10.608l.933.536a.5.5 0 01.183.683l-1.625 2.825a.5.5 0 01-.683.183l-.934-.539a8.5 8.5 0 01-9.182 0l-.934.539a.5.5 0 01-.683-.183L3.477 18.52a.5.5 0 01.183-.683l.933-.536a8.5 8.5 0 010-10.608l-.933-.536a.5.5 0 01-.183-.683l1.625-2.825a.5.5 0 01.683-.183l.934.539a8.5 8.5 0 019.182 0l.934-.539a.5.5 0 01.683.183zM12 7a5 5 0 100 10 5 5 0 000-10z"/>
@@ -436,17 +530,18 @@ function App() {
                 <span>Download for</span>
                 <strong>Android</strong>
               </div>
-            </a>
+            </motion.a>
           </div>
 
           <div className="qr-section">
             <motion.div
               className="qr-container"
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ scale: 1.03, rotateZ: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
               <div className="qr-glow" />
               <img
-                src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://github.com/autonomyowner/hasio2/releases/download/v1.0.0/app-release.apk&bgcolor=FFFFFF&color=0D7A5F"
+                src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://github.com/autonomyowner/hasio2/releases/download/v1.0.0/app-release.apk&bgcolor=FFFFFF&color=0A6B54"
                 alt="Download QR Code"
                 className="qr-code"
               />
@@ -464,9 +559,10 @@ function App() {
         <div className="section-container">
           <motion.div
             className="founder-card"
-            initial={{ y: 40, opacity: 0 }}
+            initial={{ y: 50, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="founder-info">
               <span className="founder-label">Founder & Project Lead</span>
@@ -500,9 +596,10 @@ function App() {
 
           <motion.div
             className="investment-cta"
-            initial={{ y: 40, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
+            initial={{ y: 60, opacity: 0, scale: 0.95 }}
+            whileInView={{ y: 0, opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="investment-amount">
               <span className="inv-label">Investment Opportunity</span>
