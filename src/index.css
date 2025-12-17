@@ -3,7 +3,7 @@
    Smart Tourism Platform
    ================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700&family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap');
+/* Fonts loaded via HTML preconnect for better performance */
 
 :root {
   /* Primary - Luxurious Oasis Teal */
@@ -2262,5 +2262,99 @@ img {
   .highlight-sub {
     width: 100%;
     text-align: center;
+  }
+}
+
+/* ================================
+   PERFORMANCE OPTIMIZATIONS
+   ================================ */
+
+/* GPU acceleration for animated elements */
+.phone-mockup,
+.btn-primary,
+.btn-secondary,
+.problem-card,
+.service-card,
+.roadmap-card,
+.financial-card,
+.contact-item,
+.model-step,
+.qr-container {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Content visibility for below-fold sections - enables lazy rendering */
+.problem-section,
+.solution-section,
+.roadmap-section,
+.download-section,
+.founder-section,
+.footer {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 800px;
+}
+
+/* CSS containment for layout isolation */
+.problems-grid,
+.services-grid,
+.roadmap-grid,
+.financial-summary {
+  contain: layout style;
+}
+
+/* Optimize backdrop-filter performance */
+.nav {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Reduced motion preferences - accessibility and performance */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .circle-1,
+  .circle-2,
+  .circle-3 {
+    animation: none !important;
+  }
+
+  .phone-mockup {
+    animation: none !important;
+  }
+
+  .badge-dot::after,
+  .voice-btn::after,
+  .qr-glow,
+  .voice-waves span {
+    animation: none !important;
+  }
+}
+
+/* Smooth scrolling only when not reduced motion */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Disable animations on mobile for better performance */
+@media (max-width: 768px) {
+  .circle-1,
+  .circle-2,
+  .circle-3 {
+    animation: none;
+  }
+
+  .qr-glow {
+    animation: none;
   }
 }

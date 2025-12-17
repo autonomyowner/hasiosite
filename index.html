@@ -6,9 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Hasio - Your AI-Powered Travel Assistant. Discover hotels, restaurants, and plan unforgettable experiences." />
     <title>Hasio - AI Travel Assistant</title>
+
+    <!-- DNS Prefetch for external resources -->
+    <link rel="dns-prefetch" href="https://api.qrserver.com">
+
+    <!-- Preconnect for fonts (high priority) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Preconnect for QR code API -->
+    <link rel="preconnect" href="https://api.qrserver.com">
+
+    <!-- Preload critical assets -->
+    <link rel="preload" href="/logo.png" as="image" type="image/png">
+
+    <!-- Fonts with display=swap for better performance -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700&family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Performance hints -->
+    <meta name="color-scheme" content="light">
   </head>
   <body>
     <div id="root"></div>

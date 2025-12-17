@@ -1,5 +1,5 @@
 import { motion } from 'motion/react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo, useCallback, memo } from 'react'
 
 const translations = {
   ar: {
@@ -293,26 +293,37 @@ const scaleIn = {
   visible: { opacity: 1, scale: 1 }
 }
 
+// Memoized static data outside component
+const roadmapData = [
+  { quarter: "Q1", tourists: "10K" },
+  { quarter: "Q2", tourists: "30K" },
+  { quarter: "Q3", tourists: "60K" },
+  { quarter: "Q4", tourists: "100K" }
+]
+
+// Pre-computed stats structure
+const statsConfig = [
+  { value: "15%", labelKey: "commission" },
+  { value: "0", labelKey: "costToTourist" },
+  { value: "12M", labelKey: "yearRevenue" }
+]
+
 function App() {
   const [lang, setLang] = useState('ar')
-  const t = translations[lang]
-  const isRTL = lang === 'ar'
+
+  // Memoize translations to prevent recalculation
+  const t = useMemo(() => translations[lang], [lang])
+  const isRTL = useMemo(() => lang === 'ar', [lang])
 
   useEffect(() => {
     document.documentElement.lang = lang
     document.documentElement.dir = isRTL ? 'rtl' : 'ltr'
   }, [lang, isRTL])
 
-  const toggleLang = () => {
-    setLang(lang === 'ar' ? 'en' : 'ar')
-  }
-
-  const roadmapData = [
-    { quarter: "Q1", tourists: "10K" },
-    { quarter: "Q2", tourists: "30K" },
-    { quarter: "Q3", tourists: "60K" },
-    { quarter: "Q4", tourists: "100K" }
-  ]
+  // Memoize toggle function
+  const toggleLang = useCallback(() => {
+    setLang(prev => prev === 'ar' ? 'en' : 'ar')
+  }, [])
 
   return (
     <div className={`app ${isRTL ? 'rtl' : 'ltr'}`}>
@@ -337,7 +348,7 @@ function App() {
             whileHover={{ scale: 1.02 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
           >
-            <img src="/logo.png" alt="Hasio" className="logo-img" />
+            <img src="/logo.png" alt="Hasio" className="logo-img" decoding="async" />
             <span className="logo-text">HASIO</span>
           </motion.div>
           <div className="nav-links">
@@ -454,12 +465,8 @@ function App() {
             variants={fadeUp}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            {[
-              { value: "15%", label: t.hero.stats.commission },
-              { value: "0", label: t.hero.stats.costToTourist },
-              { value: "12M", label: t.hero.stats.yearRevenue }
-            ].map((stat, index) => (
-              <motion.div key={stat.label} style={{ display: 'contents' }}>
+            {statsConfig.map((stat, index) => (
+              <motion.div key={stat.labelKey} style={{ display: 'contents' }}>
                 {index > 0 && <div className="stat-divider" />}
                 <motion.div
                   className="stat"
@@ -468,7 +475,7 @@ function App() {
                   transition={{ delay: 1 + index * 0.15, duration: 0.6 }}
                 >
                   <span className="stat-value">{stat.value}</span>
-                  <span className="stat-label">{stat.label}</span>
+                  <span className="stat-label">{t.hero.stats[stat.labelKey]}</span>
                 </motion.div>
               </motion.div>
             ))}
@@ -502,7 +509,7 @@ function App() {
                     </div>
                   </div>
                   <div className="app-header">
-                    <img src="/logo.png" alt="" className="app-logo" />
+                    <img src="/logo.png" alt="" className="app-logo" loading="lazy" decoding="async" />
                     <span>Hasio</span>
                   </div>
                   <div className="app-content">
@@ -756,7 +763,7 @@ function App() {
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="download-content">
-            <img src="/logo.png" alt="Hasio" className="download-logo" />
+            <img src="/logo.png" alt="Hasio" className="download-logo" loading="lazy" decoding="async" />
             <span className="download-badge">{t.download.badge}</span>
             <h2>{t.download.title}</h2>
             <p>{t.download.desc}</p>
@@ -789,6 +796,8 @@ function App() {
                 src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://github.com/autonomyowner/hasio2/releases/download/v1.0.0/app-release.apk&bgcolor=FFFFFF&color=0A6B54"
                 alt="Download QR Code"
                 className="qr-code"
+                loading="lazy"
+                decoding="async"
               />
               <div className="qr-corners">
                 <span /><span /><span /><span />
@@ -858,7 +867,7 @@ function App() {
         <div className="footer-content">
           <div className="footer-brand">
             <div className="logo">
-              <img src="/logo.png" alt="Hasio" className="logo-img" />
+              <img src="/logo.png" alt="Hasio" className="logo-img" loading="lazy" decoding="async" />
               <span className="logo-text">HASIO</span>
             </div>
             <p>{t.footer.tagline}</p>
